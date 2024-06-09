@@ -1,0 +1,44 @@
+.Titre {
+    color: blue;
+    text-align: center; /* Centre le titre horizontalement */
+    background-color: #5bbdce;
+    padding: 40px;
+}
+
+.flex-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.confirmation-box {
+    float: right;
+    background-color: #ADD8E6; /* Couleur de fond bleue */
+    padding: 100px;
+    margin: 100px;
+    border-radius: 15px;
+    width: 300px; /* Ajustez la largeur selon vos besoins */
+}
+
+.confirmation-box1 {
+    color: red;
+}
+
+.footer {
+    background-color: #FF0000; /* Rouge */
+    color: #FFFF00; /* Jaune */
+    padding: 5px; /* Ajoute de l'espace autour du texte */
+    text-align: center; 
+    margin-top: 79px;
+}
+
+.rouge {
+    color: red;
+}
+body {
+    background-image: url('img1.jpg');
+    background-size: cover; /* Pour que l'image couvre toute la surface */
+    background-position: center; /* Pour centrer l'image */
+    background-repeat: no-repeat; /* Pour empêcher la répétition de l'image */
+}
+

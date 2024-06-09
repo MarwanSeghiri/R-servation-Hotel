@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="hotel.css">
+    <title>Réservation d'Hôtel - MMI1</title>
+</head>
+<body>
+    <h1 class="Titre">BOOKING HOTEL <p class="rouge"> Indiquez vos dates de réservation - Toute annulation doit se faire avant 48h avant</p></h1>
+    <div class="flex-container">
+        <div  class="confirmation-box" >
+            <h2 >Formulaire de Réservation</h2>
+            <form class="reservation-form" onsubmit="return validateForm();">
+                <div>
+                    <label for="lieu_sejour">Lieu de séjour:</label>
+                    <input type="text" id="lieu_sejour" name="lieu_sejour" required>
+                </div>
+                <div>
+                    <label for="date_arrivee">Date de début:</label>
+                    <input type="date" id="date_arrivee" name="date_arrivee" required>
+                </div>
+                <div>
+                    <label for="date_depart">Date de fin:</label>
+                    <input type="date" id="date_depart" name="date_depart" required>
+                </div>
+                <div>
+                    <label for="adulte">Nombre d'adultes:</label>
+                    <input type="number" id="adulte" name="adulte" min="0" value="0" required>
+                    <button type="button" onclick="increment('adulte')">+</button>
+                    <button type="button" onclick="decrement('adulte')">-</button>
+                </div>
+                <div>
+                    <label for="enfant">Nombre d'enfants:</label>
+                    <input type="number" id="enfant" name="enfant" min="0" value="0" required>
+                    <button type="button" onclick="increment('enfant')">+</button>
+                    <button type="button" onclick="decrement('enfant')">-</button>
+                </div>
+                <div id="enfants-fields" style="display: none;">
+                    
+                </div>
+                <div>
+                    <label for="chambre">Nombre de chambres:</label>
+                    <input type="number" id="chambre" name="chambre" min="1" value="1" required>
+                    <button type="button" onclick="increment('chambre')">+</button>
+                    <button type="button" onclick="decrement('chambre')">-</button>
+                </div>
+                <div>
+                    <label for="voyage_travail">Je voyage pour le travail:</label>
+                    <input type="checkbox" id="voyage_travail" name="voyage_travail" onchange="toggleEnfantsFields()">
+                </div>
+                <div id="enfants-confirm"></div>
+                <div>
+                    <button type="submit">Rechercher</button>
+                    <button type="reset">Effacer</button>
+                </div>
+            </form>
+        </div>
+        <div class="confirmation-box">
+            <h2 class="rouge">Confirmation Réservation</h2>
+            <p>Lieu de séjour: <span id="lieu-sejour-confirm"></span></p>
+            <p>Date de début: <span id="date-arrivee-confirm"></span></p>
+            <p>Date de fin: <span id="date-depart-confirm"></span></p>
+            <p>Nombre d'adultes: <span id="adulte-confirm">0</span></p>
+            <p>Nombre d'enfants: <span id="enfant-confirm">0</span></p>
+            <div id="enfants-confirm"></div>
+            <p>Nombre de chambres: <span id="chambre-confirm">0</span></p>
+            <p>Voyage pour le travail: <span id="voyage-confirm">Non</span></p>
+        </div>
+    </div>
+    <footer class="footer">
+        Indiquez vos dates de réservation - Toute annulation doit se faire avant 48h
+    </footer>
+
+    <script>
+        function increment(fieldId) {
+            var field = document.getElementById(fieldId);
+            field.value = parseInt(field.value) + 1;
+        }
+
+        function decrement(fieldId) {
+            var field = document.getElementById(fieldId);
+            if (parseInt(field.value) > 0) {
+                field.value = parseInt(field.value) - 1;
+            }
+        }
+
+        function toggleEnfantsFields() {
+            var enfantsFields = document.getElementById('enfants-fields');
+            var voyageTravailCheckbox = document.getElementById('voyage_travail');
+            enfantsFields.style.display = voyageTravailCheckbox.checked ? 'block' : 'none';
+        }
+
+        function addChildrenFields() {
+            var enfantInput = document.getElementById('enfant');
+            var enfantsFields = document.getElementById('enfants-fields');
+            enfantsFields.innerHTML = ''; 
+
+            var numEnfants = parseInt(enfantInput.value);
+
+            for (var i = 0; i < numEnfants; i++) {
+                var enfantField = document.createElement('input');
+                enfantField.type = 'number';
+                enfantField.name = 'age_enfant_' + (i + 1);
+                enfantField.placeholder = 'Âge de l\'enfant ' + (i + 1);
+                enfantField.min = 0;
+                enfantField.max = 17;
+                enfantField.required = true;
+                enfantsFields.appendChild(enfantField);
+            }
+
+            enfantsFields.style.display = numEnfants > 0 ? 'block' : 'none';
+        }
+
+        function updateConfirmation() {
+            var lieuSejour = document.getElementById('lieu_sejour').value;
+            var dateArrivee = document.getElementById('date_arrivee').value;
+            var dateDepart = document.getElementById('date_depart').value;
+            var adulte = document.getElementById('adulte').value;
+            var enfant = document.getElementById('enfant').value;
+            var chambre = document.getElementById('chambre').value;
+            var voyageTravail = document.getElementById('voyage_travail').checked;
+
+            document.getElementById('lieu-sejour-confirm').innerText = lieuSejour;
+            document.getElementById('date-arrivee-confirm').innerText = dateArrivee;
+            document.getElementById('date-depart-confirm').innerText = dateDepart;
+            document.getElementById('adulte-confirm').innerText = adulte;
+            document.getElementById('enfant-confirm').innerText = enfant;
+            document.getElementById('chambre-confirm').innerText = chambre;
+            document.getElementById('voyage-confirm').innerText = voyageTravail ? 'Oui' : 'Non';
+
+            if (parseInt(enfant) > 0) {
+                addChildrenFields();
+            }
+        }
+
+        function validateForm() {
+            var dateArrivee = document.getElementById('date_arrivee').value;
+            var dateDepart = document.getElementById('date_depart').value;
+            var adulte = parseInt(document.getElementById('adulte').value);
+
+            if (adulte < 1) {
+                alert("Il doit y avoir au moins un adulte pour confirmer la réservation.");
+                return false;
+            }
+
+            if (dateDepart < dateArrivee) {
+                alert("La date de départ doit être postérieure ou égale à la date d'arrivée.");
+                return false;
+            }
+
+            updateConfirmation();
+            return false; 
+        }
+    </script>
+</body>
+
+
